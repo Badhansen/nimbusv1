@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "tauri-nextjs-template",
+  "productName": "nimbus",
   "version": "0.1.0",
-  "identifier": "com.tauri.dev",
+  "identifier": "com.nimbus.dev",
   "build": {
     "beforeDevCommand": "pnpm dev",
     "devUrl": "http://localhost:3000",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "tauri-nextjs-template",
+        "title": "Nimbus",
         "width": 800,
         "height": 600,
         "resizable": true,
@@ -21,6 +21,17 @@
     ],
     "security": {
       "csp": null
+    }
+  },
+  "plugins": {
+    "http": {
+      "scope": [
+        "http://localhost:8008/*",
+        "https://api.openai.com/*"
+      ]
+    },
+    "shell": {
+      "open": true
     }
   },
   "bundle": {
@@ -32,6 +43,9 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
+    ],
+    "externalBin": [
+      "binaries/fastapi-server"
     ]
   }
 }

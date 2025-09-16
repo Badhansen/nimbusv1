@@ -6,15 +6,18 @@ import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const [greeted, setGreeted] = useState<string | null>(null);
+  const [name, setName] = useState<string>("Tauri User");
+
   const greet = useCallback((): void => {
-    invoke<string>("greet")
+    invoke<string>("greet", { name })
       .then((s) => {
         setGreeted(s);
       })
       .catch((err: unknown) => {
         console.error(err);
+        setGreeted(`Error: ${err}`);
       });
-  }, []);
+  }, [name]);
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
@@ -38,12 +41,25 @@ export default function Home() {
           <li>Save and see your changes instantly.</li>
         </ol>
 
-        <div className="flex flex-col gap-2 items-start">
+        <div className="flex flex-col gap-4 items-start">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="name" className="text-sm font-medium">
+              Your Name:
+            </label>
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800"
+              placeholder="Enter your name"
+            />
+          </div>
           <Button variant="destructive" onClick={greet}>
-            Call &quot;greet&quot; from Rust
+            Call FastAPI &quot;greet&quot; via Rust
           </Button>
-          <p className="break-words w-md">
-            {greeted ?? "Click the button to call the Rust function"}
+          <p className="break-words max-w-md">
+            {greeted ?? "Enter a name and click the button to call FastAPI via Rust"}
           </p>
         </div>
       </main>
